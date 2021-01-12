@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devwaldirep.catalog.entities.Category;
+import com.devwaldirep.catalog.dto.CategoryDTO;
 import com.devwaldirep.catalog.service.CategoryService;
 
 /**
@@ -29,9 +29,9 @@ public class CategoryResource {
 	 * List e uma interface, não pode ser instanciada, é necessario instancia uma classe que implemente a interface
 	 */
 	@GetMapping
-	public ResponseEntity<List<Category>> findAll(){
+	public ResponseEntity<List<CategoryDTO>> findAll(){
 		
-		List<Category> list = service.findAll();
+		List<CategoryDTO> list = service.findAll();
 		
 		// Retorna a lista no corpo da resposta HTTP dessa requisição
 		return ResponseEntity.ok().body(list);
