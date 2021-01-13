@@ -1,7 +1,7 @@
 package com.devwaldirep.catalog.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devwaldirep.catalog.dto.CategoryDTO;
 import com.devwaldirep.catalog.entities.Category;
 import com.devwaldirep.catalog.repositories.CategoryRepository;
+import com.devwaldirep.catalog.service.exceptions.EntityNotFoundException;
 
 @Service // Registra a classe como um componente que participa do sistema de injeção de dependencia gerenciada pela spring
 public class CategoryService {
@@ -50,6 +51,16 @@ public class CategoryService {
 		}
 		return listDto; */
 		
+	}
+
+
+	@Transactional
+	public CategoryDTO findById(Long id) {
+		
+		Optional<Category> obj = repository.findById(id);
+		Category entity = obj.orElseThrow( () -> new EntityNotFoundException("Entity not found")); // Acessando o obj, se não houver obj retorna uma excessão customizada
+		
+		return new CategoryDTO(entity);
 	}
 
 }
