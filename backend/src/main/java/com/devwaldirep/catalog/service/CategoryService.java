@@ -9,6 +9,8 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +58,19 @@ public class CategoryService {
 			listDto.add(new CategoryDTO(category)); // Armazenando cada elemento da lista de categoria dentro da lista de categoriaDTO
 		}
 		return listDto; */
+		
+	}
+	
+	
+	
+	@Transactional(readOnly = true)
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
+		
+		Page<Category> list = repository.findAll(pageRequest);
+		
+		// O Page ja e um stream do Java 8 então não é necessario stream() e nem o collect(Collectors.toList())
+		
+		return list.map(x -> new CategoryDTO(x));
 		
 	}
 
