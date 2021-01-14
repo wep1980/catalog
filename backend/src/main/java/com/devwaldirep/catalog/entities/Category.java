@@ -26,15 +26,16 @@ public class Category implements Serializable{
 	
 	
 	// Feito para auditoria
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Armazenamento da hora em UTC(sem especificar um timezone)
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Armazenamento da data em UTC(sem especificar um timezone)
 	private Instant createdAt;
 	
 	
 	// Feito para auditoria
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Armazenamento da hora em UTC(sem especificar um timezone)
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Armazenamento da data em UTC(sem especificar um timezone)
 	private Instant updateAt;
 	
 	
+	// Os FRAMEWORKS ATUALMENTE NECESSITAM DOS CONTRUTORES SEM ARGUMENTOS
 	public Category() {
 		
 	}
