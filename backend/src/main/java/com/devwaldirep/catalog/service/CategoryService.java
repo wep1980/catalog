@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devwaldirep.catalog.dto.CategoryDTO;
 import com.devwaldirep.catalog.entities.Category;
 import com.devwaldirep.catalog.repositories.CategoryRepository;
-import com.devwaldirep.catalog.service.exceptions.EntityNotFoundException;
+import com.devwaldirep.catalog.service.exceptions.ResourceNotFoundException;
+
 
 @Service // Registra a classe como um componente que participa do sistema de injeção de dependencia gerenciada pela spring
 public class CategoryService {
@@ -58,7 +61,7 @@ public class CategoryService {
 	public CategoryDTO findById(Long id) {
 		
 		Optional<Category> obj = repository.findById(id);
-		Category entity = obj.orElseThrow( () -> new EntityNotFoundException("Entity not found")); // Acessando o obj, se não houver obj retorna uma excessão customizada
+		Category entity = obj.orElseThrow( () -> new ResourceNotFoundException("Entity not found")); // Acessando o obj, se não houver obj retorna uma excessão customizada
 		
 		return new CategoryDTO(entity);
 	}
@@ -74,6 +77,29 @@ public class CategoryService {
 		entity = repository.save(entity);
 		
 		return new CategoryDTO(entity);
+	}
+
+
+	
+	/**
+	 * getOne() -> Metodo necessario sempre que houver uma atualização, ele não acessa o BD
+	 * @param id
+	 * @param dto
+	 * @return
+	 */
+	@Transactional
+	public CategoryDTO update(Long id, CategoryDTO dto) {
+		
+		try {
+			Category entity = repository.getOne(id); // getOne(id) -> Metodo que não utiliza o BD, ele instancia um obj provisorio do Category com o Id informado na memoria
+			entity.setName(dto.getName()); // Atualizando os dados que estavam na memoria
+			entity = repository.save(entity); // Salvando no BD
+			
+			return new CategoryDTO(entity);
+			
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found exception" + id);
+		}
 	}
 
 	

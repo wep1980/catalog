@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.devwaldirep.catalog.service.exceptions.EntityNotFoundException;
+import com.devwaldirep.catalog.service.exceptions.ResourceNotFoundException;
 
 /**
  * Classe que intercepta qualquer excessão que acorra na camada de Resource(Controlador REST)
@@ -25,8 +25,8 @@ public class ResourceExceptionHandler {
 	 * Esse metodo e uma resposta de requisição onde o conteudo da resposta vai ser o objeto StandardError(Resposta Customizada de acordo com POSTMAN)
 	 * HttpServletRequest -> Objeto que tem as informações da requisição
 	 */
-	@ExceptionHandler(EntityNotFoundException.class) // Avisa qual e o tipo de excessão que sera interceptada
-	public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request){
+	@ExceptionHandler(ResourceNotFoundException.class) // Avisa qual e o tipo de excessão que sera interceptada
+	public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request){
 		
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
