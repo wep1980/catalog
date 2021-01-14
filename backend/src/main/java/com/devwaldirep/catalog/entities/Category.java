@@ -1,11 +1,15 @@
 package com.devwaldirep.catalog.entities;
 
 import java.io.Serializable;
+import java.time.Instant;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +25,15 @@ public class Category implements Serializable{
 	private String name;
 	
 	
+	// Feito para auditoria
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Armazenamento da hora em UTC(sem especificar um timezone)
+	private Instant createdAt;
+	
+	
+	// Feito para auditoria
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Armazenamento da hora em UTC(sem especificar um timezone)
+	private Instant updateAt;
+	
 	
 	public Category() {
 		
@@ -33,6 +46,29 @@ public class Category implements Serializable{
 	}
 
 
+	// Sempre que uma categoria for salva sera armazenado o instante atual
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+	
+	// Sempre que uma categoria for atualizada sera armazenado o instante atual
+	public Instant getUpdateAt() {
+		return updateAt;
+	}
+	
+	
+	@PrePersist // Salva antes de ir para o BD
+	public void persistPreCreate() {
+		
+		createdAt = Instant.now();
+	}
+	
+	
+	@PreUpdate // Atualiza antes de ir para o BD
+    public void persistPreUpdate() {
+		
+    	updateAt = Instant.now();
+	}
 	
 
 	public long getId() {
@@ -56,7 +92,6 @@ public class Category implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 
 	@Override
