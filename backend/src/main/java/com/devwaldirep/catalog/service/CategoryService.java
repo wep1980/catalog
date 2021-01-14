@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devwaldirep.catalog.dto.CategoryDTO;
 import com.devwaldirep.catalog.entities.Category;
 import com.devwaldirep.catalog.repositories.CategoryRepository;
+import com.devwaldirep.catalog.service.exceptions.DatabaseException;
 import com.devwaldirep.catalog.service.exceptions.ResourceNotFoundException;
 
 
@@ -97,9 +100,32 @@ public class CategoryService {
 			
 			return new CategoryDTO(entity);
 			
-		} catch (EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) { // EntityNotFoundException -> excessão para entidade que não existe
 			throw new ResourceNotFoundException("Id not found exception" + id);
 		}
+	}
+
+
+	
+	/**
+	 * No metodo de Delete tratar sempre as excessões.
+	 * 
+	 * No metodo delete não e necessario colocar o @Transactional porque sera capturada uma excessão do BD caso ela ocorra, 
+	 * e com o @Transactional não e possivel capturar essa excessão.
+	 * @param id
+	 */
+	public void delete(Long id) {
+		
+		try {
+			repository.deleteById(id);
+			
+		} catch (EmptyResultDataAccessException e) { // EmptyResultDataAccessException -> Excessão caso tente deletar um id que não existe
+			throw new ResourceNotFoundException("Id not found");
+			
+		} catch (DataIntegrityViolationException e) { // DataIntegrityViolationException -> Excessão caso tente deletar uma categoria que contenha produtos
+			throw new DatabaseException("Integrity violation");
+		}
+		
 	}
 
 	
