@@ -14,8 +14,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.devwaldirep.catalog.dto.CategoryDTO;
 import com.devwaldirep.catalog.dto.ProductDTO;
+import com.devwaldirep.catalog.entities.Category;
 import com.devwaldirep.catalog.entities.Product;
+import com.devwaldirep.catalog.repositories.CategoryRepository;
 import com.devwaldirep.catalog.repositories.ProductRepository;
 import com.devwaldirep.catalog.service.exceptions.DatabaseException;
 import com.devwaldirep.catalog.service.exceptions.ResourceNotFoundException;
@@ -27,6 +30,9 @@ public class ProductService {
 	
 	@Autowired
 	private ProductRepository repository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	
 	/**
@@ -86,19 +92,49 @@ public class ProductService {
 	
 
 
+	/**
+	 * E feito a copia dos dados do dto para dentro da entidade
+	 * @param dto
+	 * @return
+	 */
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
 		
 		Product entity = new Product();
-		//entity.setName(dto.getName());
 		
-		entity = repository.save(entity);
+		copyDtoToEntity(dto, entity);  // Metodo que copia os dados do ProductDTO para a entidade Product, metodo criado para evitar repetição de codigo nesse metodo e no update
 		
-		return new ProductDTO(entity);
+		entity = repository.save(entity); // Salvando no BD
+		
+		return new ProductDTO(entity);  // Salvando a entidade Product em forma de ProductDTO
 	}
 
 
-	
+	/**
+	 * Metodo que copia os dados do ProductDTO para a entidade Product
+	 * private -> Metodo disponivel apenas para essa classe
+	 * @param dto
+	 * @param entity
+	 */
+	private void copyDtoToEntity(ProductDTO dto, Product entity) {
+		
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+		entity.setDate(dto.getDate());
+		entity.setImgUrl(dto.getImgUrl());
+		entity.setPrice(dto.getPrice());
+		
+		entity.getCategories().clear(); // clear() -> Limpa o conjunto(Lista) de categorias que por ventura esteja na entidade, assim garanti que sera copiada somente as categorias que vieram no DTO
+		
+		for (CategoryDTO catDto : dto.getCategories()) { // Percorrendo a lista de CategoriaDTO
+			Category category = categoryRepository.getOne(catDto.getId()); // Instanciando um objeto Category sem tocar no banco de dados com getOne()
+			
+			entity.getCategories().add(category); // adicionando as categorias na entidade Product
+		}
+	}
+
+
+
 	/**
 	 * getOne() -> Metodo necessario sempre que houver uma atualização, ele não acessa o BD
 	 * @param id
@@ -110,10 +146,12 @@ public class ProductService {
 		
 		try {
 			Product entity = repository.getOne(id); // getOne(id) -> Metodo que não utiliza o BD, ele instancia um obj provisorio do Product com o Id informado na memoria
-			//entity.setName(dto.getName()); // Atualizando os dados que estavam na memoria
+			
+			copyDtoToEntity(dto, entity); // Metodo que copia os dados do ProductDTO para a entidade Product, metodo criado para evitar repetição de codigo nesse metodo e no update
+			
 			entity = repository.save(entity); // Salvando no BD
 			
-			return new ProductDTO(entity);
+			return new ProductDTO(entity); // Salvando a entidade Product em forma de ProductDTO
 			
 		} catch (EntityNotFoundException e) { // EntityNotFoundException -> excessão para entidade que não existe
 			throw new ResourceNotFoundException("Id not found exception" + id);
