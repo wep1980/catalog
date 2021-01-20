@@ -1,0 +1,14 @@
+
+// Variavel do Bootastrap - Customizando cores do bootstrap
+$theme-colors : (
+   "primary" : #407BFF
+);
+
+// background da aplicação
+$body-bg : #E5E5E5;
+
+// Cor do texto da pagina
+$body-color : #263238;
+
+
+@import '~bootstrap/scss/bootstrap.scss';

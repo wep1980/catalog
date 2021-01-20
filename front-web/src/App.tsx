@@ -1,4 +1,6 @@
 import React from 'react'; // TODO COMPONENTE REACT PRECISA TER ESSE IMPORT
+import './core/assets/styles/custom.scss';
+import './app.scss'; // Importe do CSS da pagina
 
 
 const App = () => {
