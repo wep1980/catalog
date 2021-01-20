@@ -1,0 +1,37 @@
+
+// A Classe row do bootstrap ja adiciona um dipaly-flex então pode ser aplicado um alinhamento vertical dos itens com -> align-items: center;
+.main-nav {
+    height: 70px;
+    color: #FFF;
+    align-items: center; // Alinhamento vertical dos itens vai ser centralizado
+    padding-left: 40px; // Espaçamento a esquerda
+    margin-left: 0; // tirando espaçamentos do bootstrap
+    margin-right: 0; // tirando espaçamentos do bootstrap
+}
+
+.nav-logo-text {
+    color: #FFF;
+}
+
+// menu principal
+.main-menu {
+    display: flex;
+    font-size: 18px; // Tamanho da fonte da palavras do menu
+    width: 380px; // largura do menu
+    justify-content: space-between; // Espalha os elementos, cria um espaçamento de um elemento para outro
+
+    a { // SASS function -> dentro do main-menu todas as tags <a> terão essa formatação. -- Toda tag <a> que tiver a classe .active{} o texto ficara em destaque. & no hover a cor do texto sera branco
+       font-style: normal; // retira o sublinahdo do link
+       color: rgba(255, 255, 255, 0.5);
+
+       &.active {
+          font-weight: bold; // deixa em negrito
+          color: #FFF; // cor da fonte branca
+       }
+
+       &:hover {
+        color: #FFF;
+       }
+
+    }
+}

@@ -1,6 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap'); // Importando essa fonte do google fonts
 
-*
-{
+// Aplicando essa fonte em toda aplicação
+* {
     font-family: 'Open Sans', sans-serif;
 }
+
+// configuração global dos Hs na aplicação
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0;
+    font-weight: 700;
+  }
+  
+  // Configuração global das listas, retira as bolinhas e retira a margin-bottom e o padding-left
+  ul {
+    list-style-type: none;
+    margin-bottom: 0;
+    padding-left: 0;
+  }
+  
+  // configuração global dos links
+  a {
+    &:hover {
+      text-decoration: none;
+      color: unset; // Zera o comportamento padrão que o bootstrap tem com os links<a>
+    }
+  }
