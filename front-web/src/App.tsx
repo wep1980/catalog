@@ -1,13 +1,16 @@
 import React from 'react'; // TODO COMPONENTE REACT PRECISA TER ESSE IMPORT
 import './core/assets/styles/custom.scss'; // importando css global da aplicação
 import './app.scss'; // Importe do CSS da pagina
-import Navbar from './core/components/Navbar';
+import Routes from './Routes'; // Importe das rotas
 
 
+/**
+ * <Routes/> -> Toda a plicação esta baseada em rotas
+ */
 const App = () => {
 
   return (
-      <Navbar/>
+      <Routes/>
   );
   
 }
