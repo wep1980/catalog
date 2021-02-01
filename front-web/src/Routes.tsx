@@ -12,6 +12,7 @@ import Navbar from './core/components/Navbar';
 
 import Admin from './pages/Admin';
 import Catalog from './pages/Catalog';
+import ProductDetails from './pages/Catalog/components/ProductDetails';
 import Home from './pages/Home';                                 
                                                                   
 
@@ -19,7 +20,9 @@ import Home from './pages/Home';
 /**
  * Configurando o mecanismo de rotas.
  * exact -> Apenas quando for exatamante a "/" carrega a pagina Home
+ * exact -> Apenas quando for exatamante a "/products" carrega a pagina products
  * <Navbar/> Trazendo o Navbar para todas as rotas
+ * <Route path="/products/:productId" -> Na rota ja é passado o ID
  */
 const Routes = () => (
    <BrowserRouter>
@@ -30,8 +33,12 @@ const Routes = () => (
            <Home/>
         </Route>
 
-        <Route path="/catalog">
+        <Route path="/products" exact>
            <Catalog/>
+        </Route>
+
+        <Route path="/products/:productId"> 
+           <ProductDetails/>
         </Route>
 
         <Route path="/admin">
