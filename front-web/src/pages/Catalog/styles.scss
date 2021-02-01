@@ -1,0 +1,27 @@
+.catalog-container {
+    margin-top: 28px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+
+.catalog-title {
+    font-size: 24px;
+    line-height: 33px;
+    letter-spacing: -0.015em;
+}
+
+
+.catalog-products {
+    margin-top: 43px;
+    display: grid; // CSS Grid
+    grid-template-columns: repeat(auto-fill, 250px); // Cria as colunas -- auto-fit -> repete os itens, destribui os elementos ao decorrer da linha. 250px -> Largura que cada elemento tera
+    grid-gap: 33px 20px; // Define a largura entre os itens horizontal e vertical
+    justify-content: space-between; // Em cada repetição e destribuida os elementos de forma uniforme
+
+
+
+    //display: flex;
+    //flex-wrap: wrap; // Quando chegar na largura disponivel para os card, quebra a linha
+    //justify-content: space-between;
+}
